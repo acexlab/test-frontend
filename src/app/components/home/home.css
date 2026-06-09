@@ -1,0 +1,42 @@
+.container{
+    width:80%;
+    margin:auto;
+    padding:20px;
+}
+
+h1{
+    text-align:center;
+}
+
+.todo-form{
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+    margin-bottom:30px;
+}
+
+input,
+textarea{
+    padding:10px;
+}
+
+button{
+    padding:10px;
+    cursor:pointer;
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+}
+
+table,
+th,
+td{
+    border:1px solid #ddd;
+}
+
+th,
+td{
+    padding:10px;
+}

@@ -1,0 +1,84 @@
+<div class="container">
+
+    <h1>Todo Application</h1>
+
+    <div class="todo-form">
+
+        <input
+            type="text"
+            placeholder="Title"
+            [(ngModel)]="todoData.title">
+
+        <textarea
+            placeholder="Description"
+            [(ngModel)]="todoData.description">
+        </textarea>
+
+        @if(!editMode){
+
+            <button (click)="addTodo()">
+                Add Todo
+            </button>
+
+        }
+
+        @if(editMode){
+
+            <button (click)="updateTodo()">
+                Update Todo
+            </button>
+
+        }
+
+    </div>
+
+    <div class="todo-list">
+
+        <table>
+
+            <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Description</th>
+                    <th>Completed</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+
+            <tbody>
+
+                @for(todo of todos; track todo.id){
+
+                    <tr>
+
+                        <td>{{todo.title}}</td>
+
+                        <td>{{todo.description}}</td>
+
+                        <td>{{todo.isCompleted}}</td>
+
+                        <td>
+
+                            <button
+                                (click)="editTodo(todo)">
+                                Edit
+                            </button>
+
+                            <button
+                                (click)="deleteTodo(todo.id)">
+                                Delete
+                            </button>
+
+                        </td>
+
+                    </tr>
+
+                }
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
