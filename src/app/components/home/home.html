@@ -22,48 +22,59 @@
       <div class="card form-card">
         <h3>{{ editMode ? 'Edit Task' : 'Create Task' }}</h3>
         
-        <div class="form-group">
-          <label for="todo-title">Title *</label>
-          <input
-            id="todo-title"
-            type="text"
-            placeholder="What needs to be done?"
-            [(ngModel)]="todoData.title">
-        </div>
-
-        <div class="form-group">
-          <label for="todo-desc">Description</label>
-          <textarea
-            id="todo-desc"
-            placeholder="Add details about this task..."
-            [(ngModel)]="todoData.description"
-            rows="4">
-          </textarea>
-        </div>
-
-        <div class="form-group">
-          <label for="todo-priority">Priority</label>
-          <select id="todo-priority" [(ngModel)]="todoData.priority">
-            <option value="High">High</option>
-            <option value="Medium">Medium</option>
-            <option value="Low">Low</option>
-          </select>
-        </div>
-
-        <div class="form-actions">
-          <button *ngIf="!editMode" class="btn btn-primary" (click)="addTodo()">
-            Add Task
-          </button>
-          <div *ngIf="editMode" class="btn-group">
-            <button class="btn btn-primary" (click)="updateTodo()">
-              Update Task
-            </button>
-            <button class="btn btn-secondary" (click)="cancelEdit()">
-              Cancel
-            </button>
+        <form #todoForm="ngForm" (ngSubmit)="todoForm.valid && (editMode ? updateTodo() : addTodo())">
+          <div class="form-group">
+            <label for="todo-title">Title *</label>
+            <input
+              id="todo-title"
+              type="text"
+              name="title"
+              placeholder="What needs to be done?"
+              required
+              minlength="3"
+              #titleInput="ngModel"
+              [(ngModel)]="todoData.title">
+            <div class="error-msg" *ngIf="titleInput.invalid && (titleInput.dirty || titleInput.touched)" style="color: #ef4444; font-size: 0.8rem; margin-top: 4px;">
+              <span *ngIf="titleInput.errors?.['required']">Title is required</span>
+              <span *ngIf="titleInput.errors?.['minlength']">Title must be at least 3 characters</span>
+            </div>
           </div>
-        </div>
-
+ 
+          <div class="form-group">
+            <label for="todo-desc">Description</label>
+            <textarea
+              id="todo-desc"
+              name="description"
+              placeholder="Add details about this task..."
+              [(ngModel)]="todoData.description"
+              rows="4">
+            </textarea>
+          </div>
+ 
+          <div class="form-group">
+            <label for="todo-priority">Priority</label>
+            <select id="todo-priority" name="priority" [(ngModel)]="todoData.priority">
+              <option value="High">High</option>
+              <option value="Medium">Medium</option>
+              <option value="Low">Low</option>
+            </select>
+          </div>
+ 
+          <div class="form-actions">
+            <button *ngIf="!editMode" type="submit" class="btn btn-primary" [disabled]="todoForm.invalid">
+              Add Task
+            </button>
+            <div *ngIf="editMode" class="btn-group">
+              <button type="submit" class="btn btn-primary" [disabled]="todoForm.invalid">
+                Update Task
+              </button>
+              <button type="button" class="btn btn-secondary" (click)="cancelEdit()">
+                Cancel
+              </button>
+            </div>
+          </div>
+        </form>
+ 
       </div>
     </section>
 

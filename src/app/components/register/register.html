@@ -1,36 +1,70 @@
 <div class="container">
-
+ 
     <div class="card">
-
+ 
         <h2>Register</h2>
-
-        <input
-            type="text"
-            placeholder="Name"
-            [(ngModel)]="registerData.name">
-
-        <input
-            type="email"
-            placeholder="Email"
-            [(ngModel)]="registerData.email">
-
-        <input
-            type="password"
-            placeholder="Password"
-            [(ngModel)]="registerData.password">
-
-        <button (click)="register()">
-            Register
-        </button>
-
+ 
+        <form #registerForm="ngForm" (ngSubmit)="registerForm.valid && register()" style="display: flex; flex-direction: column; gap: 20px; width: 100%;">
+ 
+            <div class="input-field-wrapper">
+                <input
+                    type="text"
+                    name="name"
+                    placeholder="Name"
+                    required
+                    minlength="2"
+                    #nameInput="ngModel"
+                    [(ngModel)]="registerData.name">
+                <div class="error-msg" *ngIf="nameInput.invalid && (nameInput.dirty || nameInput.touched)">
+                    <span *ngIf="nameInput.errors?.['required']">Name is required</span>
+                    <span *ngIf="nameInput.errors?.['minlength']">Name must be at least 2 characters</span>
+                </div>
+            </div>
+ 
+            <div class="input-field-wrapper">
+                <input
+                    type="email"
+                    name="email"
+                    placeholder="Email"
+                    required
+                    email
+                    #emailInput="ngModel"
+                    [(ngModel)]="registerData.email">
+                <div class="error-msg" *ngIf="emailInput.invalid && (emailInput.dirty || emailInput.touched)">
+                    <span *ngIf="emailInput.errors?.['required']">Email is required</span>
+                    <span *ngIf="emailInput.errors?.['email']">Please enter a valid email address</span>
+                </div>
+            </div>
+ 
+            <div class="input-field-wrapper">
+                <input
+                    type="password"
+                    name="password"
+                    placeholder="Password"
+                    required
+                    minlength="6"
+                    #passwordInput="ngModel"
+                    [(ngModel)]="registerData.password">
+                <div class="error-msg" *ngIf="passwordInput.invalid && (passwordInput.dirty || passwordInput.touched)">
+                    <span *ngIf="passwordInput.errors?.['required']">Password is required</span>
+                    <span *ngIf="passwordInput.errors?.['minlength']">Password must be at least 6 characters</span>
+                </div>
+            </div>
+ 
+            <button type="submit" [disabled]="registerForm.invalid">
+                Register
+            </button>
+ 
+        </form>
+ 
         <p>
             Already have an account?
-
+ 
             <a routerLink="/login">
                 Login
             </a>
         </p>
-
+ 
     </div>
-
+ 
 </div>

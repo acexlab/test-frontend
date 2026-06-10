@@ -1,31 +1,55 @@
 <div class="container">
-
+ 
     <div class="card">
-
+ 
         <h2>Login</h2>
-
-        <input
-            type="email"
-            placeholder="Email"
-            [(ngModel)]="loginData.email">
-
-        <input
-            type="password"
-            placeholder="Password"
-            [(ngModel)]="loginData.password">
-
-        <button (click)="login()">
-            Login
-        </button>
-
+ 
+        <form #loginForm="ngForm" (ngSubmit)="loginForm.valid && login()" style="display: flex; flex-direction: column; gap: 20px; width: 100%;">
+ 
+            <div class="input-field-wrapper">
+                <input
+                    type="email"
+                    name="email"
+                    placeholder="Email"
+                    required
+                    email
+                    #emailInput="ngModel"
+                    [(ngModel)]="loginData.email">
+                <div class="error-msg" *ngIf="emailInput.invalid && (emailInput.dirty || emailInput.touched)">
+                    <span *ngIf="emailInput.errors?.['required']">Email is required</span>
+                    <span *ngIf="emailInput.errors?.['email']">Please enter a valid email address</span>
+                </div>
+            </div>
+ 
+            <div class="input-field-wrapper">
+                <input
+                    type="password"
+                    name="password"
+                    placeholder="Password"
+                    required
+                    minlength="6"
+                    #passwordInput="ngModel"
+                    [(ngModel)]="loginData.password">
+                <div class="error-msg" *ngIf="passwordInput.invalid && (passwordInput.dirty || passwordInput.touched)">
+                    <span *ngIf="passwordInput.errors?.['required']">Password is required</span>
+                    <span *ngIf="passwordInput.errors?.['minlength']">Password must be at least 6 characters</span>
+                </div>
+            </div>
+ 
+            <button type="submit" [disabled]="loginForm.invalid">
+                Login
+            </button>
+ 
+        </form>
+ 
         <p>
             Don't have an account?
-
+ 
             <a routerLink="/register">
                 Register
             </a>
         </p>
-
+ 
     </div>
-
+ 
 </div>
