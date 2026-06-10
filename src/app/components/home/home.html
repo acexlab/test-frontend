@@ -1,84 +1,163 @@
-<div class="container">
+<div class="dashboard-container">
 
-    <h1>Todo Application</h1>
-
-    <div class="todo-form">
-
-        <input
-            type="text"
-            placeholder="Title"
-            [(ngModel)]="todoData.title">
-
-        <textarea
-            placeholder="Description"
-            [(ngModel)]="todoData.description">
-        </textarea>
-
-        @if(!editMode){
-
-            <button (click)="addTodo()">
-                Add Todo
-            </button>
-
-        }
-
-        @if(editMode){
-
-            <button (click)="updateTodo()">
-                Update Todo
-            </button>
-
-        }
-
+  <!-- Header Section -->
+  <header class="dashboard-header">
+    <div class="header-brand">
+      <h1>do it</h1>
+      <span class="header-subtitle">Manage your daily checklist</span>
     </div>
+    <div class="header-actions">
+      <span class="user-badge" *ngIf="userName">👋 Welcome, {{ userName }}</span>
+      <button class="btn btn-secondary logout-btn" (click)="logout()">
+        Logout
+      </button>
+    </div>
+  </header>
 
-    <div class="todo-list">
+  <!-- Main Grid Content -->
+  <main class="dashboard-content">
+    
+    <!-- Left Panel: Form Section -->
+    <section class="form-section">
+      <div class="card form-card">
+        <h3>{{ editMode ? 'Edit Task' : 'Create Task' }}</h3>
+        
+        <div class="form-group">
+          <label for="todo-title">Title *</label>
+          <input
+            id="todo-title"
+            type="text"
+            placeholder="What needs to be done?"
+            [(ngModel)]="todoData.title">
+        </div>
 
-        <table>
+        <div class="form-group">
+          <label for="todo-desc">Description</label>
+          <textarea
+            id="todo-desc"
+            placeholder="Add details about this task..."
+            [(ngModel)]="todoData.description"
+            rows="4">
+          </textarea>
+        </div>
 
-            <thead>
-                <tr>
-                    <th>Title</th>
-                    <th>Description</th>
-                    <th>Completed</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
+        <div class="form-group">
+          <label for="todo-priority">Priority</label>
+          <select id="todo-priority" [(ngModel)]="todoData.priority">
+            <option value="High">High</option>
+            <option value="Medium">Medium</option>
+            <option value="Low">Low</option>
+          </select>
+        </div>
 
-            <tbody>
+        <div class="form-actions">
+          <button *ngIf="!editMode" class="btn btn-primary" (click)="addTodo()">
+            Add Task
+          </button>
+          <div *ngIf="editMode" class="btn-group">
+            <button class="btn btn-primary" (click)="updateTodo()">
+              Update Task
+            </button>
+            <button class="btn btn-secondary" (click)="cancelEdit()">
+              Cancel
+            </button>
+          </div>
+        </div>
 
-                @for(todo of todos; track todo.id){
+      </div>
+    </section>
 
-                    <tr>
+    <!-- Right Panel: List Section -->
+    <section class="list-section">
+      
+      <!-- Search & Info Bar -->
+      <div class="list-controls">
+        <div class="search-wrapper">
+          <input
+            class="search-input"
+            type="text"
+            placeholder="🔍 Search tasks by title or description..."
+            [(ngModel)]="searchText">
+        </div>
+      </div>
 
-                        <td>{{todo.title}}</td>
-
-                        <td>{{todo.description}}</td>
-
-                        <td>{{todo.isCompleted}}</td>
-
-                        <td>
-
-                            <button
-                                (click)="editTodo(todo)">
-                                Edit
-                            </button>
-
-                            <button
-                                (click)="deleteTodo(todo.id)">
-                                Delete
-                            </button>
-
-                        </td>
-
-                    </tr>
-
-                }
-
-            </tbody>
-
+      <!-- Todo List Table Container -->
+      <div class="table-container card">
+        <table *ngIf="filteredTodos.length > 0; else emptyState">
+          <thead>
+            <tr>
+              <th>Task</th>
+              <th>Priority</th>
+              <th>Status</th>
+              <th class="actions-column">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let todo of filteredTodos; trackBy: trackByTodoId">
+              <td>
+                <div class="task-details">
+                  <div class="task-title" [class.task-title-completed]="todo.isCompleted">
+                    {{ todo.title }}
+                  </div>
+                  <div class="task-desc">
+                    {{ todo.description || 'No description provided' }}
+                  </div>
+                </div>
+              </td>
+              <td>
+                <span class="badge priority-badge" [ngClass]="'priority-' + (todo.priority | lowercase)">
+                  {{ todo.priority }}
+                </span>
+              </td>
+              <td>
+                <span class="badge status-badge" [class.completed]="todo.isCompleted" [class.pending]="!todo.isCompleted">
+                  {{ todo.isCompleted ? 'Completed' : 'Pending' }}
+                </span>
+              </td>
+              <td>
+                <div class="action-buttons">
+                  <button
+                    class="btn-action btn-toggle"
+                    [class.btn-toggle-completed]="todo.isCompleted"
+                    title="Toggle Completion"
+                    (click)="toggleComplete(todo)">
+                    {{ todo.isCompleted ? 'Mark Pending' : 'Mark Completed' }}
+                  </button>
+                  <button
+                    class="btn-action btn-edit"
+                    title="Edit Task"
+                    (click)="editTodo(todo)">
+                    Edit
+                  </button>
+                  <button
+                    class="btn-action btn-delete"
+                    title="Delete Task"
+                    (click)="deleteTodo(todo.id)">
+                    Delete
+                  </button>
+                </div>
+              </td>
+            </tr>
+          </tbody>
         </table>
 
-    </div>
+        <!-- Infinite Scroll Bottom Loader Indicator -->
+        <div class="scroll-loader" *ngIf="hasMoreTodos()">
+          <span class="loader-dots">Scroll down to load more...</span>
+        </div>
+
+        <ng-template #emptyState>
+          <div class="empty-state">
+            <div class="empty-icon">📝</div>
+            <h4>No tasks found</h4>
+            <p *ngIf="searchText">Try adjusting your search query</p>
+            <p *ngIf="!searchText">Create a new task to get started!</p>
+          </div>
+        </ng-template>
+      </div>
+
+    </section>
+
+  </main>
 
 </div>

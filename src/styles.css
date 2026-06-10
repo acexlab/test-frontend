@@ -1,1 +1,57 @@
-/* You can add global styles to this file, and also import other style files */
+:root {
+  --font-family: 'Plus Jakarta Sans', sans-serif;
+  --bg-gradient: none;
+  --bg-color: #fafafa;
+  --panel-bg: #ffffff;
+  --panel-border: #e4e4e7;
+  --text-primary: #09090b;
+  --text-secondary: #71717a;
+  --primary: #09090b;
+  --primary-hover: #27272a;
+  --primary-glow: rgba(9, 9, 11, 0.08);
+  --accent-high: #ef4444;
+  --accent-high-bg: #fee2e2;
+  --accent-medium: #f97316;
+  --accent-medium-bg: #ffedd5;
+  --accent-low: #3b82f6;
+  --accent-low-bg: #dbeafe;
+  --success: #10b981;
+  --success-bg: #d1fae5;
+  --pending: #f59e0b;
+  --pending-bg: #fef3c7;
+  --input-bg: #ffffff;
+  --input-border: #d4d4d8;
+  --input-focus: #09090b;
+  --border-radius: 12px;
+  --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--font-family);
+  background: var(--bg-color);
+  color: var(--text-primary);
+  min-height: 100vh;
+  line-height: 1.5;
+  overflow-x: hidden;
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #f4f4f5;
+}
+::-webkit-scrollbar-thumb {
+  background: #d4d4d8;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #a1a1aa;
+}

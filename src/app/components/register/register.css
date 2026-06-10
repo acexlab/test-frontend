@@ -1,26 +1,108 @@
-.container{
-    height:100vh;
-    display:flex;
-    justify-content:center;
-    align-items:center;
+.container {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
 }
 
-.card{
-    width:350px;
-    padding:20px;
-    border:1px solid #ddd;
-    border-radius:8px;
-
-    display:flex;
-    flex-direction:column;
-    gap:15px;
+.card {
+  width: 100%;
+  max-width: 400px;
+  padding: 40px;
+  background: var(--panel-bg);
+  border: 1px solid var(--panel-border);
+  border-radius: 20px;
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  animation: slideIn 0.5s ease-out;
 }
 
-input{
-    padding:10px;
+h2 {
+  font-size: 2rem;
+  font-weight: 700;
+  text-align: center;
+  margin-bottom: 10px;
+  color: var(--text-primary);
 }
 
-button{
-    padding:10px;
-    cursor:pointer;
+input {
+  width: 100%;
+  padding: 14px 16px;
+  background: var(--input-bg);
+  border: 1px solid var(--input-border);
+  border-radius: 12px;
+  color: var(--text-primary);
+  font-family: var(--font-family);
+  font-size: 0.95rem;
+  transition: var(--transition);
+}
+
+input:focus {
+  outline: none;
+  border-color: var(--input-focus);
+  box-shadow: 0 0 0 4px var(--primary-glow);
+}
+
+input::placeholder {
+  color: var(--text-secondary);
+}
+
+button {
+  width: 100%;
+  padding: 14px;
+  background: #09090b;
+  border: none;
+  border-radius: 12px;
+  color: #ffffff;
+  font-family: var(--font-family);
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--transition);
+  box-shadow: 0 4px 12px var(--primary-glow);
+}
+
+button:hover {
+  transform: translateY(-2px);
+  background: #27272a;
+  box-shadow: 0 6px 20px rgba(9, 9, 11, 0.25);
+}
+
+button:active {
+  transform: translateY(0);
+}
+
+p {
+  text-align: center;
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+}
+
+a {
+  color: #09090b;
+  text-decoration: none;
+  font-weight: 600;
+  transition: var(--transition);
+  margin-left: 5px;
+}
+
+a:hover {
+  color: #27272a;
+  text-decoration: underline;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
